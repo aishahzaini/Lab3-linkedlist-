@@ -1,0 +1,166 @@
+//combination of example 1 and example 2
+//insertion of node in the middle and after a given node
+#pragma once
+//List.h
+//Declaration of class List
+
+#ifndef LIST_H
+#define LIST_H
+using namespace std;
+#include <iostream>
+#include <string>
+
+template<class DataType>
+class List
+{
+private:
+	class Node
+	{
+	public:
+		DataType data;
+		Node* link;
+
+	};
+
+	Node* pHead;
+	Node* pCurr;
+	Node* pTail;
+	int numItem;
+
+public:
+	List();
+	~List();
+	void addinmiddle();
+	void addlagi(DataType target);
+	bool Traverse(DataType target);
+	void printData();
+	int NumberOfItem();
+};
+#endif
+
+//Define the implementation of all methods in class List
+
+template<class DataType>
+List<DataType>::List()
+{
+	numItem = 0;
+	pHead = 0;
+}
+
+template<class DataType>
+List<DataType>::~List()
+{}
+
+template<class DataType>
+void List<DataType>::addinmiddle()
+{	
+	DataType tambah;
+	Node *pNew = new Node;
+	cout << "Enter data : ";
+	cin >> tambah;
+	pNew->data = tambah;
+	pNew->link = 0;
+	if (pHead == 0)
+	{
+		pHead = pNew;
+		pTail = pHead;
+	}
+	else
+	{
+		pTail->link = pNew;
+		pTail = pNew;
+	}
+	numItem++;
+}
+
+template<class DataType>
+void List<DataType>::addlagi(DataType target)
+{	
+	pCurr->data = target;
+	DataType toadd;
+	Node* pNew = new Node;						//declare new node for data target
+	cout << "Enter data : ";					
+	cin >> toadd;								//enter data
+	pNew->data = toadd;							//assign data to pNew->data
+	pNew->link = pCurr->link;					//pNew->link point to pCurr->link
+	pCurr->link = pNew;							//assign pCurr to pNew
+	numItem++;
+}
+
+
+template<class DataType>
+void List<DataType>::printData()
+{
+	pCurr = pHead;
+	while (pCurr != 0)
+	{
+		cout << pCurr->data << " ";
+		pCurr = pCurr->link;
+	}
+	cout << "\n";
+}
+
+template<class DataType>
+int List<DataType>::NumberOfItem()
+{
+	return numItem;
+}
+
+template<class DataType>
+bool List<DataType>::Traverse(DataType target)
+{
+	if (numItem == 0)
+		cout << "There is no item in the list" << endl;
+	else
+	{
+		pCurr = pHead;
+		while (pCurr->data != target && pCurr->link != 0)
+		{
+			pCurr = pCurr->link;
+		}
+		if (pCurr->data == target)
+			return true;	
+		else
+			return false;
+	}
+}
+
+
+//ListMain.cpp
+
+#include <iostream>
+#include <string>
+using namespace std;
+#include "List.h"
+
+void main()
+{
+	string target;
+	int location;
+
+	List<string> x;
+	for (int i = 1; i < 4; i++)
+	{
+		x.addinmiddle();
+	}
+	cout << "\nNumber Of Item Now : " << x.NumberOfItem();
+	cout << "\nThe list are : " << endl;
+	x.printData();
+
+	cout << "\nAdd after item : ";
+	cin >> target;
+	
+
+	if (x.Traverse(target) == true)
+	{
+		x.addlagi(target);
+		cout << "The new list are : " << endl;
+		x.printData();
+	}
+	else
+	{
+		cout << "Item is not found. Couldn't add Item into the list.   \n";
+	}
+}
+
+
